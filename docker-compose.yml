@@ -1,0 +1,57 @@
+version: '3.8'
+services:
+  nginx:
+    image: nginx:1.15
+    ports:
+      - "80:80"
+    volumes:
+      - ./laravel:/usr/share/nginx/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+  php-fpm:
+    build: ./docker/php-fpm
+    volumes:
+      - ./laravel:/var/www/html
+
+  composer:
+    image: composer:latest
+    volumes:
+      - ./:/app
+    entrypoint: composer
+
+  node:
+    image: node:18
+    volumes:
+      - ./laravel:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: [ "npm" ]
+    command: [ "--help" ]
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: spa_db
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: spa_user
+      MYSQL_PASSWORD: password
+      TZ: Asia/Tokyo
+    ports:
+      - "53306:3306"
+    volumes:
+      - spa_data:/var/lib/mysql
+
+  mail:
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+    environment:
+      MH_STORAGE: maildir
+      MH_MAILDIR_PATH: /tmp
+    volumes:
+      - mail_sample_dir:/tmp
+
+volumes:
+  spa_data:
+    driver: local
+  mail_sample_dir:
+    driver: local
