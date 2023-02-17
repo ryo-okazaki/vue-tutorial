@@ -2,8 +2,11 @@ FROM node:18.14-alpine
 
 WORKDIR /app
 
-RUN apk update && \
-    npm install -g npm && \
-    npm install -g @vue/cli
+COPY ./frontend/package.json ./
+COPY ./frontend/package-lock.json ./
+
+RUN npm install
 
 EXPOSE 8080
+
+CMD [ "npm", "run", "serve" ]

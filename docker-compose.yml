@@ -31,10 +31,6 @@ services:
       - "8080:8080"
     volumes:
       - ./frontend:/app
-    tty: true
-    stdin_open: true
-#  command: "npm start"
-#    entrypoint: [ "npm" ]
 
   mysql:
     container_name: spa_mysql
