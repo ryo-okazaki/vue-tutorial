@@ -15,9 +15,19 @@ export default {
     return {
       message: "Hello World",
       dynamicId: 'aaa',
-      titleClass: 'title'
+      titleClass: 'title',
+      count: 0
+    }
+  },
+  methods: {
+    increment() {
+    //  コンポーネントの状態を更新する
+      this.count++
     }
   }
+//  メソッドの中では、thisを使ってコンポーネントインスタンスにアクセスできる
+//  コンポーネントインスタンスはdataによって宣言されたデータプロパティを公開
+//  これらのプロパティを変更することで、コンポーネントの状態を更新できる
 }
 </script>
 
@@ -52,6 +62,16 @@ Vueでは、mustaches(二重中括弧)はテキスト補間のみ使用する
 v-bindは非常に頻繁に使うため、専用の省略記法がある
 -->
   <div :id="titleClass">yyy</div>
+
+<!--
+イベントリスナー
+v-onディレクティブを使うことで、DOMイベントを購読することができる
+-->
+  <button v-on:click="increment">count is {{ count }}</button>
+  <button @click="increment">count is {{ count }}</button>
+<!--
+incrementはmethodsオプションを使って宣言された関数を参照
+-->
 </template>
 
 <style>
