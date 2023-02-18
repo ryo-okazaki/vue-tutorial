@@ -10,6 +10,8 @@ dataコンポーネントオプションを使ってリアクティブステー�
 -->
 
 <script>
+let id = 0
+
 export default {
   data() {
     return {
@@ -18,7 +20,14 @@ export default {
       titleClass: 'title',
       count: 0,
       text: '',
-      awesome: false
+      awesome: false,
+
+      newTodo: '',
+      todos: [
+        { id: id++, text: 'Learn HTML' },
+        { id: id++, text: 'Learn JavaScript'},
+        { id: id++, text: 'Learn Vue'}
+      ]
     }
   },
   methods: {
@@ -35,6 +44,15 @@ export default {
 
     toggle() {
       this.awesome = !this.awesome
+    },
+
+    addTodo() {
+      this.todos.push({ id: id++, text: this.newTodo})
+      this.newTodo = ''
+    },
+
+    removeTodo(todo) {
+      this.todos = this.todos.filter((t) => t !== todo)
     }
   }
 //  メソッドの中では、thisを使ってコンポーネントインスタンスにアクセスできる
@@ -101,7 +119,32 @@ v-modelは<input>の値をバインドされた状態と自動的に同期する
 -->
   <button @click="toggle">toggle</button>
   <h1 v-if="awesome">Vue is awesome</h1>
-  <h1 v-else>Oh n😢</h1>
+  <h1 v-else>Oh no😢</h1>
+
+<!--
+リストレンダリング
+v-forディレクティブを使用すると、配列を基にした要素のリストをレンダリングできる
+-->
+  <input v-model="newTodo">
+  <button @click="addTodo">add Todo</button>
+  <ul>
+    <li v-for="todo in todos" :key="todo.id">
+      {{ todo.text }}
+      <button @click="removeTodo(todo)">削除</button>
+    </li>
+  </ul>
+<!--
+各ToDoオブジェクトに一意のidを与え、それを各<li>の特別なkey属性としてバインドしている
+このkeyにより、Vueは各<li>を配列内の対応するオブジェクトの位置に合わせて正確に移動できる
+
+リストを更新するには、2つの方法がある
+1. 配列の変更メソッドを呼び出す
+  this.todos.push(newTodo)
+
+2. 配列を新しいものに置き換える
+  this.todos = this.todos.filter(/* ... */)
+
+-->
 </template>
 
 <style>
