@@ -17,12 +17,14 @@ dataコンポーネントオプションを使ってリアクティブステー�
 
 <script>
 import ChildComp from './components/ChildComp.vue'
+import ChildComp1 from './components/ChildComp1.vue'
 
 let id = 0
 
 export default {
   components: {
-    ChildComp
+    ChildComp,
+    ChildComp1,
   },
   // componentsオプションを使用して、コンポーネントを登録する必要がある
   data() {
@@ -46,7 +48,9 @@ export default {
       todoData: null,
 
       greeting: 'Hello from parent',
-      childMsg: 'No child msg yet'
+      childMsg: 'No child msg yet',
+
+      ChildComp1Msg: 'from parent'
     }
   },
   methods: {
@@ -253,6 +257,12 @@ ChildCompコンポーネントをテンプレート内で使用する
 親は属性と同じように、propを子に渡すことができる
 動的な値を渡すには、v-bindという構文も使える
 -->
+<!--
+スロット
+propを経由したデータの受け渡しだけでなく、親コンポーネントはテンプレートフラグメントを
+スロットを経由して子コンポーネントへ渡すこともできる
+-->
+  <ChildComp1>Message: {{ ChildComp1Msg }}</ChildComp1>
 </template>
 
 <style>
