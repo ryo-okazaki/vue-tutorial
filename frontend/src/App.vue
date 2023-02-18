@@ -24,10 +24,11 @@ export default {
 
       newTodo: '',
       todos: [
-        { id: id++, text: 'Learn HTML' },
-        { id: id++, text: 'Learn JavaScript'},
-        { id: id++, text: 'Learn Vue'}
-      ]
+        { id: id++, text: 'Learn HTML', done: true },
+        { id: id++, text: 'Learn JavaScript', done: true },
+        { id: id++, text: 'Learn Vue', done: false }
+      ],
+      hideCompleted: false
     }
   },
   methods: {
@@ -47,12 +48,21 @@ export default {
     },
 
     addTodo() {
-      this.todos.push({ id: id++, text: this.newTodo})
+      this.todos.push({ id: id++, text: this.newTodo, done: false })
       this.newTodo = ''
     },
 
     removeTodo(todo) {
       this.todos = this.todos.filter((t) => t !== todo)
+    }
+  },
+  // 算出プロパティ
+  // 他のプロパティからリアクティブに算出されたプロパティをcomputedオプションを使用して宣言
+  computed: {
+    filteredTodos() {
+      return this.hideCompleted
+        ? this.todos.filter((t) => !t.done)
+        : this.todos
     }
   }
 //  メソッドの中では、thisを使ってコンポーネントインスタンスにアクセスできる
@@ -130,11 +140,16 @@ v-forディレクティブを使用すると、配列を基にした要素のリ
     <button>Add Todo</button>
   </form>
   <ul>
-    <li v-for="todo in todos" :key="todo.id">
-      {{ todo.text }}
+    <li v-for="todo in filteredTodos" :key="todo.id">
+      <input type="checkbox" v-model="todo.done">
+      <span :class="{ done: todo.done }">{{ todo.text }}</span>
+<!--      todo.doneがdoneがtrueの場合、クラス属性にdoneが入る仕組み-->
       <button @click="removeTodo(todo)">削除</button>
     </li>
   </ul>
+  <button @click="hideCompleted = !hideCompleted">
+    {{ hideCompleted ? 'Show All' : 'Hide Completed' }}
+  </button>
 <!--
 各ToDoオブジェクトに一意のidを与え、それを各<li>の特別なkey属性としてバインドしている
 このkeyにより、Vueは各<li>を配列内の対応するオブジェクトの位置に合わせて正確に移動できる
@@ -147,6 +162,13 @@ v-forディレクティブを使用すると、配列を基にした要素のリ
   this.todos = this.todos.filter(/* ... */)
 
 -->
+
+<!--
+算出プロパティ
+各ToDoにトグル機能を追加する
+各ToDoオブジェクトにdoneプロパティを追加して、チェックボックスにそれをバインドするためにv-modelを使う
+
+-->
 </template>
 
 <style>
@@ -155,5 +177,8 @@ v-forディレクティブを使用すると、配列を基にした要素のリ
 }
 .title {
   color: brown;
+}
+.done {
+  text-decoration: line-through;
 }
 </style>
