@@ -63,7 +63,15 @@ export default {
       return this.hideCompleted
         ? this.todos.filter((t) => !t.done)
         : this.todos
-    }
+    },
+  },
+
+  mounted() {
+    // マウントした後のコードを実施したい場合、mountedのoptionが使える
+    // コンポーネントがマウントされました
+    this.$refs.p.textContent = 'mounted!'
+    // refでmountを呼び出し、pという要素のtextContent属性を指定
+    // DOMを直接操作
   }
 //  メソッドの中では、thisを使ってコンポーネントインスタンスにアクセスできる
 //  コンポーネントインスタンスはdataによって宣言されたデータプロパティを公開
@@ -167,8 +175,15 @@ v-forディレクティブを使用すると、配列を基にした要素のリ
 算出プロパティ
 各ToDoにトグル機能を追加する
 各ToDoオブジェクトにdoneプロパティを追加して、チェックボックスにそれをバインドするためにv-modelを使う
+-->
+
+<!--
+テンプレート参照
+特別なref属性（例：テンプレート内の要素）を使って、テンプレートの参照が要求できる
+要素がthis.$refsはthis.$refs.pとして公開されるが、コンポーネントがマウントされた後でないとアクセスできない
 
 -->
+  <p ref="p">hello</p>
 </template>
 
 <style>
