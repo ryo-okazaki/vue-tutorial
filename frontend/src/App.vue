@@ -43,7 +43,9 @@ export default {
       hideCompleted: false,
 
       todoId: 1,
-      todoData: null
+      todoData: null,
+
+      greeting: 'Hello from parent'
     }
   },
   methods: {
@@ -239,7 +241,11 @@ v-forディレクティブを使用すると、配列を基にした要素のリ
 <!--
 ChildCompコンポーネントをテンプレート内で使用する
 -->
-  <ChildComp />
+  <ChildComp :msg="greeting" />
+<!--
+親は属性と同じように、propを子に渡すことができる
+動的な値を渡すには、v-bindという構文も使える
+-->
 </template>
 
 <style>
