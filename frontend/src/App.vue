@@ -17,7 +17,8 @@ export default {
       dynamicId: 'aaa',
       titleClass: 'title',
       count: 0,
-      text: ''
+      text: '',
+      awesome: false
     }
   },
   methods: {
@@ -30,6 +31,10 @@ export default {
       console.log(e)
     // v-on ハンドラーはネイティブDOMのイベントを引数として受け取る
       this.text = e.target.value
+    },
+
+    toggle() {
+      this.awesome = !this.awesome
     }
   }
 //  メソッドの中では、thisを使ってコンポーネントインスタンスにアクセスできる
@@ -89,6 +94,14 @@ v-modelは<input>の値をバインドされた状態と自動的に同期する
   <input :value="text" @input="onInput">
   <input v-model="text">
   <p>{{ text }}</p>
+
+<!--
+条件付きレンダリング
+要素を条件付きでレンダリングする際に、v-ifディレクティブを使用できる
+-->
+  <button @click="toggle">toggle</button>
+  <h1 v-if="awesome">Vue is awesome</h1>
+  <h1 v-else>Oh n😢</h1>
 </template>
 
 <style>
