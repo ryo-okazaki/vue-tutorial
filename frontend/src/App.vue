@@ -125,8 +125,10 @@ v-modelは<input>の値をバインドされた状態と自動的に同期する
 リストレンダリング
 v-forディレクティブを使用すると、配列を基にした要素のリストをレンダリングできる
 -->
-  <input v-model="newTodo">
-  <button @click="addTodo">add Todo</button>
+  <form @submit.prevent="addTodo">
+    <input v-model="newTodo">
+    <button>Add Todo</button>
+  </form>
   <ul>
     <li v-for="todo in todos" :key="todo.id">
       {{ todo.text }}
