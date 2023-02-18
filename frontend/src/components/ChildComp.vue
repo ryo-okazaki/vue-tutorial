@@ -1,7 +1,13 @@
 <script>
 export default {
+  emits: ['response'],
+  created() {
+    this.$emit('response', 'hello from child') // 発行されるイベントを宣言する
+  },
+  // this.$emit()の第一引数はイベント名
+  // 追加の引数は、イベントリスナーに渡される
   props: {
-    msg: String
+    msg: String,
   }
 }
 </script>
@@ -13,5 +19,5 @@ export default {
 -->
 
 <template>
-  <h2>{{ msg || 'No props passed yet' }}</h2>
+  <h2>Child component</h2>
 </template>

@@ -45,7 +45,8 @@ export default {
       todoId: 1,
       todoData: null,
 
-      greeting: 'Hello from parent'
+      greeting: 'Hello from parent',
+      childMsg: 'No child msg yet'
     }
   },
   methods: {
@@ -240,8 +241,14 @@ v-forディレクティブを使用すると、配列を基にした要素のリ
 
 <!--
 ChildCompコンポーネントをテンプレート内で使用する
+
+親はv-onを使って子が発行するイベントを購読できる
+ここでは、ハンドラーは子のemit呼び出しから追加の引数を受け取り、それをローカルステートに割り当てている
 -->
+  <ChildComp />
   <ChildComp :msg="greeting" />
+  <ChildComp @response="(msg) => childMsg = msg" />
+  <p>{{ childMsg }}</p>
 <!--
 親は属性と同じように、propを子に渡すことができる
 動的な値を渡すには、v-bindという構文も使える
