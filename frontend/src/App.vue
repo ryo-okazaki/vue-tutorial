@@ -16,13 +16,20 @@ export default {
       message: "Hello World",
       dynamicId: 'aaa',
       titleClass: 'title',
-      count: 0
+      count: 0,
+      text: ''
     }
   },
   methods: {
     increment() {
     //  コンポーネントの状態を更新する
       this.count++
+    },
+
+    onInput(e) {
+      console.log(e)
+    // v-on ハンドラーはネイティブDOMのイベントを引数として受け取る
+      this.text = e.target.value
     }
   }
 //  メソッドの中では、thisを使ってコンポーネントインスタンスにアクセスできる
@@ -72,6 +79,16 @@ v-onディレクティブを使うことで、DOMイベントを購読するこ�
 <!--
 incrementはmethodsオプションを使って宣言された関数を参照
 -->
+
+<!--
+フォームバインディング
+v-bindとv-onを一緒に使うことで、input要素に双方向バインディングを作成することができる
+
+v-modelは<input>の値をバインドされた状態と自動的に同期するので、そのためのイベントハンドラーを使う必要はない
+-->
+  <input :value="text" @input="onInput">
+  <input v-model="text">
+  <p>{{ text }}</p>
 </template>
 
 <style>
