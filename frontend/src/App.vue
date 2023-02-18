@@ -28,7 +28,10 @@ export default {
         { id: id++, text: 'Learn JavaScript', done: true },
         { id: id++, text: 'Learn Vue', done: false }
       ],
-      hideCompleted: false
+      hideCompleted: false,
+
+      todoId: 1,
+      todoData: null
     }
   },
   methods: {
@@ -54,6 +57,18 @@ export default {
 
     removeTodo(todo) {
       this.todos = this.todos.filter((t) => t !== todo)
+    },
+
+    incrementToDoId() {
+      this.todoId++
+    },
+
+    async fetchData() {
+      this.todoData = null
+      const res = await fetch(
+          `https://jsonplaceholder.typicode.com/todos/${this.todoId}`
+      )
+      this.todoData = await res.json()
     }
   },
   // 算出プロパティ
@@ -69,13 +84,32 @@ export default {
   mounted() {
     // マウントした後のコードを実施したい場合、mountedのoptionが使える
     // コンポーネントがマウントされました
+
+    // ライフサイクルフックと呼ばれ、コンポーネントライフサイクルの特定の時に呼び出されるコールバックを登録できる
+    // mountedは、VueインスタンスがDOMにマウントされた直後に呼び出されるフック。
+    // つまり、VueインスタンスがDOMに挿入された直後に、このフックが呼び出される
+
     this.$refs.p.textContent = 'mounted!'
     // refでmountを呼び出し、pという要素のtextContent属性を指定
     // DOMを直接操作
-  }
+    this.fetchData()
+  },
 //  メソッドの中では、thisを使ってコンポーネントインスタンスにアクセスできる
 //  コンポーネントインスタンスはdataによって宣言されたデータプロパティを公開
 //  これらのプロパティを変更することで、コンポーネントの状態を更新できる
+
+  watch: {
+    count(newCount) {
+      // watchオプションでcountプロパティを監視している
+      // watchコールバックは、countが変更された時に呼び出され、新しい値を引数として受け取る
+      console.log(`new count is: ${newCount}`)
+     },
+
+    // todoIdプロパティを監視している
+    todoId() {
+      this.fetchData()
+    }
+  },
 }
 </script>
 
@@ -184,6 +218,11 @@ v-forディレクティブを使用すると、配列を基にした要素のリ
 
 -->
   <p ref="p">hello</p>
+
+  <p>Todo id: {{ todoId }}</p>
+  <button @click="incrementToDoId">Fetch next todo</button>
+  <p v-if="!todoData">Loading...</p>
+  <pre v-else>{{ todoData }}</pre>
 </template>
 
 <style>
